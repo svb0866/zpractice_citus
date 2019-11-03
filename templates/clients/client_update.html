@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extratail %}
+<script src='{% static 'js/clients.js' %}'></script>
+    {{ form.media.js }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ form.media.css }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+    <h1>Client Details</h1>
+    <div class="row pt-3">
+        <div class="col-8">
+    <form action="." method="POST">{% csrf_token %}{{ form.non_field_errors }}
+        <h2>Client Basic Information</h2>
+        <div class="form-row">
+            <div class="form-group col-4">
+                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {{ form.first_name|add_class:"form-control"}}
+                {{ form.first_name.errors }}
+            </div>
+            <div class="form-group col-4">
+                <label for="{{ form.middle_name.id_for_label }}">Middle Name</label>
+                {{ form.middle_name|add_class:"form-control"}}
+                {{ form.middle_name.errors }}
+            </div>
+            <div class="form-group col-4">
+                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {{ form.last_name|add_class:"form-control"}}
+                {{ form.last_name.errors }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-2">
+                <label for="{{ form.suffix.id_for_label }}">Suffix</label>
+                {{ form.suffix|add_class:"form-control"}}
+                {{ form.suffix.errors }}
+            </div>
+            <div class="form-group col-4">
+                <label for="{{ form.preferred_name.id_for_label }}">Preferred Name</label>
+                {{ form.preferred_name|add_class:"form-control"}}
+                {{ form.preferred_name.errors }}
+            </div>
+            <div class="form-group col-2">
+                <label for="{{ form.age.id_for_label }}">Age</label>
+                {{ form.age|add_class:"form-control"}}
+                {{ form.age.errors }}
+            </div>
+            <div class="form-group col-4">
+                <label for="{{ form.dob.id_for_label }}">Date of Birth</label>
+                {{ form.dob|add_class:"form-control"|append_attr:"data-toggle:datepicker"}}
+                <small class="form-text text-muted ml-2">YYYY-MM-DD format</small>
+                {{ form.dob.errors }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-4">
+                <label for="{{ form.sex.id_for_label }}">Gender</label>
+                {{ form.sex|add_class:"form-control"}}
+                {{ form.sex.errors }}
+            </div>
+            <div class="form-group col-4">
+                <label for="{{ form.relationship_status.id_for_label }}">Relationship Status</label>
+                {{ form.relationship_status|add_class:"form-control"}}
+                {{ form.relationship_status.errors }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-4">
+                <div class="form-check">
+                {{ form.client_minor.errors }}
+                {{ form.client_minor| add_class:"form-check-input" }}
+                <label class="form-check-label" for="{{ form.client_minor.id_for_label }}">Minor Client</label>
+                </div>
+            </div>
+        </div>
+        <div class="pb-2"><input class="btn btn-secondary" type="submit" value="Save" /></div>
+
+
+        <h2 class="pt-5">Client Contact Information</h2>
+        <div class="form-row">
+            <div class="col">
+                <div class="fieldWrapper">
+                <label for="{{ form.phone1.id_for_label }}">Primary Phone</label>
+                {{ form.phone1| add_class:"form-control" }}
+                {{ form.phone1.errors }}
+            </div>
+        </div>
+            <div class="form-group col">
+                <div class="fieldWrapper">
+                <label for="{{ form.phone2.id_for_label }}">Alternate Phone</label>
+                {{ form.phone2| add_class:"form-control" }}
+                {{ form.phone2.errors }}
+                </div>
+        </div>
+        <div class="form-group col">
+            <div class="fieldWrapper">
+            <label for="{{ form.phone3.id_for_label }}">Alternate Phone 2</label>
+            {{ form.phone3 | add_class:"form-control" }}
+            {{ form.phone3.errors }}
+            </div>
+        </div>
+        </div>
+        <div class="form-row">
+        <div class="form-group col">
+            <div class="fieldWrapper">
+            <label for="{{ form.primary_email.id_for_label }}">Primary Email</label>
+            {{ form.primary_email| add_class:"form-control" }}
+            {{ form.primary_email.errors }}
+            </div>
+        </div>
+        <div class="form-group col">
+            <div class="fieldWrapper">
+            {{ form.secondary_email.errors }}
+            <label for="{{ form.secondary_email.id_for_label }}">Secondary Email</label>
+            {{ form.secondary_email| add_class:"form-control" }}
+            </div>
+        </div>
+        </div>
+        <div class="form-row">
+        <div class="form-group col">
+        <div class="fieldWrapper">
+            <label for="{{ form.billing_type.id_for_label }}">Billing Type</label>
+            {{ form.billing_type| add_class:"form-control" }}
+            {{ form.billing_type.errors }}
+        </div>
+        </div>
+        <div class="form-group col">
+            <div class="fieldWrapper">
+            <label for="{{ form.referred_by.id_for_label }}">Referred By</label>
+            {{ form.referred_by| add_class:"form-control" }}
+            {{ form.referred_by.errors }}
+            </div>
+        </div>
+        </div>
+        <div class="form-row">
+        <div class="form-group col">
+            <div class="form-check">
+        {{ form.send_email_appointment_reminders.errors }}
+        {{ form.send_email_appointment_reminders| add_class:"form-check-input" }}
+        <label class="form-check-label" for="{{ form.send_email_appointment_reminders.id_for_label }}">Send Email Appointment Reminders</label>
+        </div>
+    </div>
+    <div class="form-group col">
+        <div class="form-check">
+        {{ form.access_client_portal.errors }}
+        {{ form.access_client_portal| add_class:"form-check-input" }}
+        <label class="form-check-label" for="{{ form.access_client_portal.id_for_label }}">Give Access to Client Portal</label>
+        </div>
+    </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col">
+            <label for="{{ form.address.id_for_label }}">Address</label>
+            {{ form.address|add_class:"form-control"}}
+            {{ form.address.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-4">
+            <label for="{{ form.city.id_for_label }}">City</label>
+            {{ form.city|add_class:"form-control"}}
+            {{ form.city.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.state.id_for_label }}">State</label>
+            {{ form.state|add_class:"form-control"}}
+            {{ form.state.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.zip.id_for_label }}">Zip</label>
+            {{ form.zip|add_class:"form-control"}}
+            {{ form.zip.errors }}
+        </div>
+    </div>
+        <div class="pb2"><input class="btn btn-secondary" type="submit" value="Save" /></div>
+
+    <h2 class="pt-5">Emergency Contact Information</h2>
+    <div class="form-row">
+        <div class="form-group col">
+            <label for="{{ form.emergency_first_name.id_for_label }}">First Name of the Emergency contact</label>
+            {{ form.emergency_first_name|add_class:"form-control"}}
+            {{ form.emergency_first_name.errors }}
+        </div>
+        <div class="form-group col">
+            <label for="{{ form.emergency_last_name.id_for_label }}">Last Name</label>
+            {{ form.emergency_last_name|add_class:"form-control"}}
+            {{ form.emergency_last_name.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-4">
+            <label for="{{ form.emergency_relation.id_for_label }}">Relation with client</label>
+            {{ form.emergency_relation|add_class:"form-control"}}
+            {{ form.emergency_relation.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.emergency_phone.id_for_label }}">Phone</label>
+            {{ form.emergency_phone|add_class:"form-control"}}
+            {{ form.emergency_phone.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.emergency_email.id_for_label }}">Email</label>
+            {{ form.emergency_email|add_class:"form-control"}}
+            {{ form.emergency_email.errors }}
+        </div>
+    </div>
+        <div></div><input class="btn btn-secondary" type="submit" value="Save" />
+
+
+    <h2 class="pt-5">Insurance Information</h2>
+    <div class="form-row">
+        <div class="form-group col-6">
+            <label for="{{ form.insurance_company.id_for_label }}">Insurance Company</label>
+            {{ form.insurance_company|add_class:"form-control"}}
+            {{ form.insurance_company.errors }}
+        </div>
+        <div class="form-group col-2">
+            <label for="{{ form.group_id.id_for_label }}">Group ID</label>
+            {{ form.group_id|add_class:"form-control"}}
+            {{ form.group_id.errors }}
+        </div>
+        <div class="form-group col-2">
+            <label for="{{ form.plan_id.id_for_label }}">Plan ID</label>
+            {{ form.plan_id|add_class:"form-control"}}
+            {{ form.plan_id.errors }}
+        </div>
+        <div class="form-group col-2">
+            <label for="{{ form.member_id.id_for_label }}">Member ID</label>
+            {{ form.member_id|add_class:"form-control"}}
+            {{ form.member_id.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-6">
+            <label for="{{ form.client_relationship_to_insured.id_for_label }}">Relation with the Insured</label>
+            {{ form.client_relationship_to_insured|add_class:"form-control"}}
+            {{ form.client_relationship_to_insured.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-4">
+            <label for="{{ form.insured_first_name.id_for_label }}">First name of Insured</label>
+            {{ form.insured_first_name|add_class:"form-control"}}
+            {{ form.insured_first_name.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.insured_last_name.id_for_label }}">Insured Last name</label>
+            {{ form.insured_last_name|add_class:"form-control"}}
+            {{ form.insured_last_name.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.insured_sex.id_for_label }}">Insured Gender</label>
+            {{ form.insured_sex|add_class:"form-control"}}
+            {{ form.insured_sex.errors }}
+        </div>
+    </div>
+        <div class="form-row">
+        <div class="form-group col-4">
+            <label for="{{ form.insured_birth_date.id_for_label }}">Insured Birthdate</label>
+            {{ form.insured_birth_date|add_class:"form-control"|append_attr:"data-toggle:datepicker"}}
+                <small class="form-text text-muted ml-2">YYYY-MM-DD format</small>
+            {{ form.insured_birth_date.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.insured_phone.id_for_label }}">Insured Phone</label>
+            {{ form.insured_phone|add_class:"form-control"}}
+            {{ form.insured_phone.errors }}
+        </div>
+    </div>
+        <div class="form-row">
+        <div class="form-group col">
+            <label for="{{ form.insured_address.id_for_label }}">Address of the Insured</label>
+            {{ form.insured_address|add_class:"form-control"}}
+            {{ form.insured_address.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-4">
+            <label for="{{ form.insured_city.id_for_label }}">City</label>
+            {{ form.insured_city|add_class:"form-control"}}
+            {{ form.insured_city.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.insured_state.id_for_label }}">State</label>
+            {{ form.insured_state|add_class:"form-control"}}
+            {{ form.insured_state.errors }}
+        </div>
+        <div class="form-group col-4">
+            <label for="{{ form.insured_zip.id_for_label }}">Zip</label>
+            {{ form.insured_zip|add_class:"form-control"}}
+            {{ form.insured_zip.errors }}
+        </div>
+    </div>
+        <div></div><input class="btn btn-secondary" type="submit" value="Save" />
+    </form>
+</div>
+</div>
+</div>
+{% endblock %}

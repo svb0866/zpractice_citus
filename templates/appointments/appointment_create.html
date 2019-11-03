@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block extratail %}
+<script src='{% static 'js/appointments.js' %}'></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+    <div class="col-6">
+        <h1>{{ client.first_name|default:" " }} {{ client.middle_name|default:" " }} {{ client.last_name|default:" " }} {{ client.suffix|default:" " }}</h1>
+        <p>
+            {% if client.dob %}
+            <span>{{ client.dob }}</span> <span> | </span>
+            {% endif %}
+            <span>Age:</span><span>{{ client.age|default:" " }}</span> <span> | </span>
+            <a href="{{ client.get_update_url }}">Edit</a> <span> | </span>
+        </p>
+    </div></div>
+    <div class="row mt-2">
+    <div class="col-6">
+    <form method="post">{% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-row">
+        <div class="form-group col-6">
+            {{ form.appointment_date.errors }}
+            <label for="{{ form.appointment_date.id_for_label }}">Appointment Date</label>
+            {{ form.appointment_date|add_class:"form-control"|append_attr:"data-toggle:datepicker"|append_attr:"autocomplete:off"}}
+            <small class="form-text text-muted ml-2">YYYY-MM-DD format</small>
+        </div>
+        <div class="form-group col-6">
+            {{ form.appointment_time.errors }}
+            <label for="{{ form.appointment_time.id_for_label }}">Appointment Time</label>
+            {{ form.appointment_time|add_class:"form-control timepicker"  }}
+        </div></div>
+        <div class="form-group">
+            {{ form.appointment_duration.errors }}
+            <label for="{{ form.appointment_duration.id_for_label }}">Duration</label>
+            {{ form.appointment_duration|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            {{ form.appointment_reason.errors }}
+            <label for="{{ form.appointment_reason.id_for_label }}">Reason for the Appointment</label>
+            {{ form.appointment_reason|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            {{ form.assigned_to.errors }}
+            <label for="{{ form.assigned_to.id_for_label }}">Assigned clinician</label>
+            {{ form.assigned_to|add_class:"form-control" }}
+        </div>
+        <div class="form-check">
+            {{ form.send_confirmation_email|add_class:"form-check-input" }}
+            {{ form.send_confirmation_email.errors }}
+            <label for="{{ form.send_confirmation_email.id_for_label }}">Send Email confirmation</label>
+        </div>
+    <input class="btn btn-secondary" type="submit" value="Set Appointment">
+    </form>
+    </div>
+
+        <div class="col-6">
+        <div>
+            <p align="center">CLIENT INFO</p>
+            <table class="table table-sm border">
+                <tr><td>Email</td><td>{{ client.primary_email|default_if_none:"" }}</td></tr>
+                <tr><td>Secondary Email</td><td>{{ client.secondary_email|default_if_none:"" }}</td></tr>
+                <tr><td>Phone (Primary)</td><td>{{ client.get_parsed_phone1|default_if_none:"" }}</td></tr>
+                <tr><td>Phone</td><td>{{ client.get_parsed_phone2|default_if_none:"" }}</td></tr>
+                <tr><td>Phone</td><td>{{ client.get_parsed_phone3|default_if_none:"" }}</td></tr>
+            </table>
+        </div>
+
+        <div>
+            <p align="center">EMERGENCY CONTACT</p>
+            <table class="table table-sm border">
+                <tr><td>Name</td><td>{{ client.emergency_first_name|default_if_none:"" }} {{ client.emergency_last_name|default_if_none:"" }}</td></tr>
+                <tr><td>Relation</td><td>{{ client.emergency_relation|default_if_none:"" }}</td></tr>
+                <tr><td>Email</td><td>{{ client.emergency_email|default_if_none:"" }}</td></tr>
+                <tr><td>Phone (Primary)</td><td>{{ client.get_parsed_emergency_phone|default_if_none:"" }}</td></tr>
+            </table>
+        </div>
+
+        <div>
+            <p align="center">UPCOMINIG APPOINTMENTS</p>
+            <table class="table table-sm border">
+                <thead>
+                    <tr>
+                      <th scope="col">Appointment</th>
+                      <th scope="col">Clinician</th>
+                    </tr>
+                </thead>
+            <tbody>
+                {% for appointment in client.get_upcoming_appointments %}
+                    <tr><td><a href="{{ appointment.get_update_url }}">{{ appointment.appointment_start_datetime }}</a> </td><td>{{ appointment.assigned_to }}</td></tr>
+                {% endfor %}
+                {%  if not appointments  %}
+                    <tr><td>No Appointments | <a href="{{ client.get_set_appointment_url }}">New appointment</a> </td></tr>
+                {% else %}
+                    <tr><td><a href="{{ client.get_set_appointment_url }}">New appointment</a> </td><td> </td></tr>
+                {% endif %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,2 @@
+
+$("#clients-bt").addClass('active');

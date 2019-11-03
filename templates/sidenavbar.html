@@ -1,0 +1,39 @@
+
+<div class="container-fluid border-right ">
+        <div class="row">
+        <div class="col py-2">
+             <a href="{% url 'clients:client-create' %}" class="btn btn-warning btn-block"><i class="fas fa-user-plus"></i> Add Client</a>
+        </div>
+        </div>
+         <div class="row ">
+            <div class="col px-1">
+                <div class="card" style="width: 11rem;">
+                  <div class="card-body">
+                    <h5 class="card-title">Get help</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Customer Care</h6>
+                    <p class="card-text">customerservice@gmail.com</p>
+                  </div>
+                </div>
+            </div>
+            </div>
+
+        <div class="row ">
+            <div class="col px-1 py-3">
+               <a href="{% url 'clients:clients-list' %}" id="clients-bt" class="btn btn-light w-100 my-1 text-left"> <i class="far fa-address-book"></i>  Client</a>
+               <a href="{% url 'appointments:calendar-view' %}" id="calendar-bt" class="btn btn-light w-100 my-1 text-left"> <i class="far fa-calendar-alt"></i>  Calendar</a>
+               <a href="{% url 'team-list' %}" id="team-bt" class="btn btn-light w-100 my-1 text-left"><i class="fas fa-users"></i>  Team</a>
+            </div>
+            </div>
+
+        <div class="row">
+
+        <div class="col col py-1">
+        <p>RECENTLY CREATED</p>
+            <ul class="list-group">
+                {% for client in request.user.get_last5_clients %}
+                 <li class="list-group-item p-1 text-left"><a href="{{ client.get_absolute_url }}">{{ client.first_name }} {{ client.last_name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+</div>

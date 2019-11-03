@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extratail %}
+<script src='{% static 'js/team.js' %}'></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row"><div class="col"><a class="btn btn-warning" href="{% url 'team-create' %}"><i class="fas fa-plus-square"></i> Add Team member</a></div></div>
+    <div class="row mt-2">
+    <div class="col">
+    <table class="table">
+    <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Name</th>
+          <th scope="col">Phone</th>
+            <th scope="col">email</th>
+            <th scope="col">Clinician</th>
+            <th scope="col">Can Schedule</th>
+            <th scope="col"> </th>
+            <th scope="col"> </th>
+          </tr>
+        </thead>
+     <tr>
+        {% for team in team_list %}
+            <tr>
+            <td>{{ team.username }}</td>
+            <td>{{ team.first_name }} {{ team.last_name }}</td>
+            <td>{{ team.get_parsed_phone }}</td>
+            <td>{{ team.email }}</td>
+            <td>{{ team.is_clinician }}</td>
+            <td>{{ team.is_scheduler }}</td>
+                {% if not team.is_owner %}
+            <td><a class="btn btn-danger" href="{{ team.update_team_member }}">Edit</a></td>
+            <td><a class="btn btn-danger" href="{{ team.delete_team_member }}">Delete</a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+     </tbody>
+    </table>
+
+    </div>
+    </div>
+</div>
+{% endblock %}

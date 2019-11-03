@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block extrahead %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block extratail %}
+<script src="{% static 'js/printThis.js' %}"></script>
+<script src='{% static 'js/clients.js' %}'></script>
+<script type="text/javascript" src="{% static "js/client_details.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row my-3">
+    <div class="col-8">
+        <h1>{{ client.first_name|default:" " }} {{ client.middle_name|default:" " }} {{ client.last_name|default:" " }} {{ client.suffix|default:" " }}</h1>
+        <p>
+            {% if client.dob %}
+            <span>{{ client.dob }}</span> <span> | </span>
+            {% endif %}
+            <span>Age:</span><span>{{ client.age|default:" " }}</span> <span> | </span>
+            <a href="{{ client.get_update_url }}">Edit</a> <span> | </span>
+            <a href="{{ client.get_set_appointment_url }}">Schedule Appointment</a><span> | </span>
+            {% if client.access_client_portal %}<a href="{{ client.get_portal_toggle_url }}" ><span class="badge badge-success" title="Click to revoke access">Portal Access</span></a>{% endif %}
+            {% if not client.access_client_portal %}<a href="{{ client.get_portal_toggle_url }}" ><span class="badge badge-danger" title="Click to enable access">Portal Access</span></a>{% endif %}
+        </p>
+        <div id="administrative_note" class="alert alert-secondary" role="alert">
+            <small>Administrative Note</small>
+            {{ administrative_note.administrative_note_body |default:"  |  Click Edit to add a new note. Administrative Notes can be seen by all team members, including non-clinical team members"|safe }}
+            <br><a href="#" id="administrative_note_edit">Edit</a>
+        </div>
+
+        <div id="administrative_note_form">
+            <div class="border-top border-bottom">
+            <form action="{% url 'clients:client-administrative-note' client.uuid%}" method="POST">
+                <div class="form-group">
+                {% csrf_token %}
+                {{ administrative_note_form.non_field_errors }}
+                {{ administrative_note_form.non_field_errors }}
+                <div class="fieldWrapper">
+                    <small id="emailHelp" class="form-text text-muted">Administrative Note : Administrative Note, can be viewed by everyone including non-clinical team members with scheduling access</small>
+                    {{ administrative_note_form.administrative_note_body.errors }}
+                    {{ administrative_note_form.administrative_note_body | append_attr:"class:form-control"}}
+                </div>
+                <input class="btn btn-secondary" type="submit" value="Save" />
+                <input class="btn btn-secondary" type="submit" value="Cancel" />
+                </div>
+            </form>
+        </div>
+        </div>
+        {% if user.is_clinician %}
+        <div class="border-top border-bottom">
+            <form action="" method="POST">
+                <div class="form-group">
+                {{ client_note_form.non_field_errors }}
+                {% csrf_token %}
+                {{ client_note_form.non_field_errors }}
+                <div class="fieldWrapper">
+                    {{ client_note_form.client_note_title.errors }}
+                    <small id="emailHelp" class="form-text text-muted">Clinical Note : Note title</small>
+                    {{ client_note_form.client_note_title | append_attr:"class:form-control" }}
+                </div>
+                <div class="fieldWrapper">
+                    <small id="emailHelp" class="form-text text-muted">Clinical Note : Cannot be seen by non-clinical team members it can include patient information, appointment information, copy-pasted from email or any other document like MS-Word</small>
+                    {{ client_note_form.client_note_body.errors }}
+                    {{ client_note_form.client_note_body | append_attr:"class:form-control"}}
+                </div>
+                <input class="btn btn-secondary" type="submit" value="Save" />
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <div class="accordion m-2" id="accordionMain">
+                {% for note in client_notes.all %}
+                <div class="card">
+                    <div class="card-header p-0" id="heading{{ note.uuid }}">
+                      <h2 class="mb-0 ">
+                        <button class="btn btn-block btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{note.uuid}}" aria-expanded="false" aria-controls="collapse{{ note.uuid }}">
+                          <p id="printTitle{{ note.uuid }}" class="text-left">{{note.client_note_title}}</p>
+                        </button>
+                      </h2>
+                    </div>
+
+                    <div id="collapse{{note.uuid}}" class="collapse" aria-labelledby="heading{{ note.uuid }}" data-parent="#accordionMain">
+                      <div class="card-body" id="printBody{{note.uuid }}">
+                          <div>{{ note.client_note_body|safe}}</div>
+                      </div>
+                        <div class="card-footer text-muted mb-1">
+                        <small>created by : {{ note.created_by }}  |  {{ note.created_datetime }}</small>
+                            <div style="float: right;"><a href="#" onclick="return false;" ><span id="printLink" class="" data-uuid="{{ note.uuid }}">Print</span></a> <span> |  </span> <a href="{{ note.get_update_url }}" >Edit</a><span> |  </span><a href="{{ note.get_delete_url }}" >Delete</a></div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+
+
+
+    <div class="col-4">
+        <div>
+            <p class="text-center">CLIENT INFO</p>
+            <table class="table table-sm border">
+                <tr><td>Email</td><td>{{ client.primary_email|default_if_none:"" }}</td></tr>
+                <tr><td>Secondary Email</td><td>{{ client.secondary_email|default_if_none:"" }}</td></tr>
+                <tr><td>Phone (Primary)</td><td>{{ client.get_parsed_phone1|default_if_none:"" }}</td></tr>
+                <tr><td>Phone</td><td>{{ client.get_parsed_phone2|default_if_none:"" }}</td></tr>
+                <tr><td>Phone</td><td>{{ client.get_parsed_phone3|default_if_none:"" }}</td></tr>
+            </table>
+        </div>
+
+        <div>
+            <p class="text-center">EMERGENCY CONTACT</p>
+            <table class="table table-sm border">
+                <tr><td>Name</td><td>{{ client.emergency_first_name|default_if_none:"" }} {{ client.emergency_last_name|default_if_none:"" }}</td></tr>
+                <tr><td>Relation</td><td>{{ client.emergency_relation|default_if_none:"" }}</td></tr>
+                <tr><td>Email</td><td>{{ client.emergency_email|default_if_none:"" }}</td></tr>
+                <tr><td>Phone (Primary)</td><td>{{ client.get_parsed_emergency_phone|default_if_none:"" }}</td></tr>
+            </table>
+        </div>
+
+        <div>
+            <p class="text-center">UPCOMINIG APPOINTMENTS</p>
+            <table class="table table-sm border">
+                <thead>
+                    <tr>
+                      <th scope="col">Appointment</th>
+                      <th scope="col">Clinician</th>
+                    </tr>
+                </thead>
+            <tbody>
+                {% for appointment in client.get_upcoming_appointments %}
+                    <tr><td><a href="{{ appointment.get_update_url }}">{{ appointment.appointment_start_datetime }}</a> </td><td>{{ appointment.assigned_to }}</td></tr>
+                {% endfor %}
+                {%  if not client.get_upcoming_appointments  %}
+                    <tr><td>No Appointments | <a href="{{ client.get_set_appointment_url }}">New appointment</a> </td></tr>
+                {% else %}
+                    <tr><td><a href="{{ client.get_set_appointment_url }}">New appointment</a> </td><td> </td></tr>
+                {% endif %}
+            </tbody>
+            </table>
+        </div>
+
+        <div>
+            <p class="text-center">CLIENT FILES</p>
+            {% if user.is_clinician %}
+            <table class="table table-sm border">
+            <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"><small>Uploaded</small></th>
+                  <th scope="col"><small>Date and Time</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in client.clientfile_set.all %}
+                    <tr><td><a target="_blank" href="{{ file.get_download_url }}">{{ file.file_name }}</a></td>
+                    <td><small>{{ file.uploaded_by }}</small></td>
+                    <td><small>{{ file.created_datetime }}</small></td>
+                    <td><small><a href="{{ file.get_delete_url }}">Delete</a></small></td></tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        {% endif %}
+            <form enctype="multipart/form-data" method="POST" action="{% url 'clients:client-file-upload' client.uuid %}">
+                {% csrf_token %}
+                {{ upload_form.non_field_errors }}
+                <div class="form-group">
+                    {{ upload_form.file.errors }}
+                    {{ upload_form.file }}
+                </div>
+                <input id="btnFetch" class="btn btn-secondary btn-sm " type="submit" value="Upload" />
+            </form>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+{% endblock %}

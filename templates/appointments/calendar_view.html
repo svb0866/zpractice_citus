@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block extratail %}
+<script src='{% static 'js/appointments.js' %}'></script>
+{% endblock %}
+
+
+{% block fullcalendar %}
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.css' rel='stylesheet' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.js'></script>
+    <script src='{% static "js/calendar_view.js" %}'></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row py-3">
+    <div class="col-4">
+    <select class="custom-select w-75" id="selection">
+    <option selected>All Appointments</option>
+    {% for user in teams %}
+        <option value="{{ user.username }}">{{user.first_name}} {{user.first_name}}</option>
+    {% endfor %}
+    </select>
+    </div>
+    <div class="col-8">
+        <p style="display:inline-block; width:100px; background: #a0ff87; color: black;" class="badge badge-primary">Show</p>
+          <p style="display:inline-block; width:100px; background: #c8c8c8; color: black;" class="badge badge-primary">No Show</p>
+          <p style="display:inline-block; width:100px; background: #96b3e6; color: black;" class="badge badge-primary">Scheduled</p>
+          <p style="display:inline-block; width:100px; background: #f09b50; color: black;" class="badge badge-primary">Canceled</p>
+          <p style="display:inline-block; width:100px; background: #ff8487; color: black;" class="badge badge-primary">Late Canceled</p>
+    </div>
+    </div>
+
+    <div class="row"><div class="col" id='calendar'></div></div>
+
+    <div>
+    <div class="modal fade" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Appointment Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" >Particulars</th>
+                  <th scope="col">Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Client </td>
+                  <td><a id="client" href="#"></a></td>
+                </tr>
+              <tr>
+                  <td>Date and Time</td>
+                  <td id="appointment_datetime">Data</td>
+                </tr>
+              <tr>
+                  <td>Reason</td>
+                  <td id="appointment_reason">Data</td>
+                </tr>
+                  <td>Assigned to</td>
+                  <td id="assigned_to">Data</td>
+                </tr>
+              <tr>
+                  <td>Change status</td>
+                  <td id="assigned_to">
+                      <a href="#" id="show" style="display:inline-block; width:100px; background: #a0ff87; color: black;" class="badge badge-primary">Show</a>
+                      <a href="#" id="no_show" style="display:inline-block; width:100px; background: #c8c8c8; color: black;" class="badge badge-primary">No Show</a>
+                      <a href="#" id="scheduled" style="display:inline-block; width:100px; background: #96b3e6; color: black;" class="badge badge-primary">Scheduled</a>
+                      <a href="#" id="canceled" style="display:inline-block; width:100px; background: #f09b50; color: black;" class="badge badge-primary">Canceled</a>
+                      <a href="#" id="late_canceled" style="display:inline-block; width:100px; background: #ff8487; color: black;" class="badge badge-primary">Late Canceled</a>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <a href="" class="btn btn-secondary" id="edit_appointment">Edit Appointment</a>
+
+          </div>
+    </div>
+  </div>
+    </div>
+    </div>
+
+{% endblock %}

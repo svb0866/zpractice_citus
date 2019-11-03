@@ -1,0 +1,2 @@
+
+$("#team-bt").addClass('active');

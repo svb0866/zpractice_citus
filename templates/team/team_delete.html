@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extratail %}
+<script src='{% static 'js/team.js' %}'></script>
+{% endblock %}
+{% block content %}
+    <h1>Client Delete confirmation</h1>
+    <form action="." method="post">{% csrf_token %}
+        <h1>Do you really want to delete this Team Member? {{ user_obj.username }}</h1>
+        <p><input type="submit" value="yes"><a href="../">Cancel</a> </p>
+    </form>
+{% endblock %}

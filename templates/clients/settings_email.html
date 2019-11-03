@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extratail %}
+<script src='{% static 'js/clients.js' %}'></script>
+{% endblock %}
+
+{% block extrahead %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+<div class="col-8 p-2">
+
+    <h1>Email Settings</h1>
+    <form method="POST">{% csrf_token %}
+        {{ form.non_field_errors }}
+     <div class="form-group my-5"><div class="form-row align-items-center">
+         <label for="{{ form.email_reminder_setting.id_for_label }}">Send Automatic Appointment Reminder before :  </label>
+         {{ form.email_reminder_setting.errors }}
+         <div class="col-auto">
+         {{ form.email_reminder_setting| add_class:"form-control" }}
+         </div>
+         <div class="col-auto"><button type="submit" class="btn btn-primary">Submit</button></div>
+     </div></div>
+
+    <div class="form-group my-5 border-top border-bottom">
+        {{ form.new_appointment.errors }}
+        <label for="{{ form.new_appointment.id_for_label }}">New appointment Email</label>
+        {{ form.new_appointment }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newAppointmentModal">Preview</button>
+    </div>
+
+     <div class="form-group my-5 border-top border-bottom">
+        {{ form.appointment_reminder.errors }}
+        <label for="{{ form.appointment_reminder.id_for_label }}">Appointment Reminder Email</label>
+        {{ form.appointment_reminder }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reminderAppointmentModal">Preview</button>
+    </div>
+
+     <div class="form-group my-5 border-top border-bottom">
+        {{ form.appointment_reschedule.errors }}
+        <label for="{{ form.appointment_reschedule.id_for_label }}">Appointment Reschedule Email</label>
+        {{ form.appointment_reschedule }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rescheduleAppointmentModal">Preview</button>
+    </div>
+
+     <div class="form-group my-5 border-top border-bottom">
+        {{ form.appointment_canceled.errors }}
+        <label for="{{ form.appointment_canceled.id_for_label }}">Canceled appointment Email</label>
+        {{ form.appointment_canceled }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#canceledAppointmentModal">Preview</button>
+    </div>
+
+     <div class="form-group my-5 border-top border-bottom">
+        {{ form.client_onboarding.errors }}
+        <label for="{{ form.client_onboarding.id_for_label }}">Client Onboarding Email</label>
+        {{ form.client_onboarding }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientOnboadringModal">Preview</button>
+    </div>
+    </form>
+
+
+<!--  newAppointmentModal Modal -->
+<div class="modal fade" id="newAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="newAppointmentModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newAppointmentModal">New appointment Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ email_template.new_appointment }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  reminderAppointmentModal Modal -->
+<div class="modal fade" id="reminderAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="reminderAppointmentModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reminderAppointmentModal">Appointment Remainder Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{email_template.appointment_reminder}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  rescheduleAppointmentModal Modal -->
+<div class="modal fade" id="rescheduleAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="rescheduleAppointmentModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rescheduleAppointmentModal">Reschedule Appointment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{email_template.appointment_reschedule}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  canceledAppointmentModal Modal -->
+<div class="modal fade" id="canceledAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="canceledAppointmentModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="canceledAppointmentModal">Cancelled appointment Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{email_template.appointment_canceled}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  clientOnboadringModal Modal -->
+<div class="modal fade" id="clientOnboadringModal" tabindex="-1" role="dialog" aria-labelledby="clientOnboadringModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="clientOnboadringModal">Client On-boarding email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{email_template.client_onboarding}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+<div class="col-4">
+<p>
+    <ul class="list-group">
+    <li class="list-group-item">{% templatetag openvariable %}client_name{% templatetag closevariable %} is replaced with First and last name of the client eg. John Smith</li>
+    <li class="list-group-item">{% templatetag openvariable %}assigned_clinician{% templatetag closevariable %} is replaced with First and last name of the clinician assigned for the appointment</li>
+    <li class="list-group-item">{% templatetag openvariable %}your_name{% templatetag closevariable %} is replaced with your first and last name</li>
+    <li class="list-group-item">{% templatetag openvariable %}appointment_date_time{% templatetag closevariable %} is replaced with the date and time of the appointment </li>
+    <li class="list-group-item">{% templatetag openvariable %}old_appointment_date_time{% templatetag closevariable %} is replaced with the old date and time of the appointment when the appointment is rescheduled (USE ONLY FOR Reschedule Email Template)</li>
+    <li class="list-group-item">{% templatetag openvariable %}new_appointment_date_time{% templatetag closevariable %} is replaced with the new date and time of the appointment when the appointment is rescheduled (USE ONLY FOR Reschedule Email Template)</li>
+    <li class="list-group-item">{% templatetag openvariable %}access_credential{% templatetag closevariable %} is replaced with the access credentials and link to the online practice (USE ONLY FOR Client On-boarding Template)</li>
+    </ul>
+</p>
+</div>
+</div>
+{% endblock %}

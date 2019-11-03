@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Patient Relationship Management - DocPRM</title>
+    </head>
+    <body class="text-center">
+
+    <nav class="navbar navbar-light bg-secondary">
+        <a class="navbar-brand text-white" href="#">DocPRM</a>
+    </nav>
+
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col col-xl-4 col-lg-5 col-md-6 ">
+    <h3 class="py-4">Welcome back to Zpractice</h3>
+    <h5 class="py-2">We help you manage your clients and patients!</h5>
+      <div class="card mt-4 p-4">
+        <form class="form-signin m3" action="." method="POST">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                {{ form.username.errors }}
+                <label class="sr-only" for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username|attr:"class:form-control"|attr:"placeholder:Username" }}
+            </div>
+            <div class="form-group">
+                {{ form.password.errors }}
+                <label class="sr-only" for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password|attr:"class:form-control"|attr:"placeholder:Password" }}
+            </div>
+            <div class="form-group">
+            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in" />
+            </div>
+            <div class="form-group">
+                <p style="font-size:70%;">By clicking “Sign In”, you agree to our Terms of Service, Refund Policy, and Privacy Policy.</p>
+            </div>
+            <a href="{% url 'password_reset'%}" class="pull-right">Forgot Password?</a><br>
+              <a href="{% url 'password_reset'%}" class="pull-right">Forgot Username?</a><br>
+              <p>Dont have an account ? <a href="localhost:8000/signup/" class="pull-right">Signup for free</a></p>
+        </form>
+          </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+
+</html>

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extratail %}
+<script src='{% static 'js/appointments.js' %}'></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container pt-5">
+    <div class="row">
+        <div class="col-6">
+            <form method="post">{% csrf_token %}{{ form.non_field_errors }}
+                <div class="form-group">
+                    {{ form.appointment_date.errors }}
+                    <label for="{{ form.appointment_date.id_for_label }}">Appointment Date</label>
+
+                    {{ form.appointment_date|add_class:"form-control"|append_attr:"data-toggle:datepicker"  }}
+                    <small class="form-text text-muted ml-2">YYYY-MM-DD format</small>
+                </div>
+                <div class="form-group">
+                    {{ form.appointment_time.errors }}
+                    <label for="{{ form.appointment_time.id_for_label }}">Appointment Time</label>
+                    {{ form.appointment_time|add_class:"form-control timepicker"  }}
+                </div>
+                <div class="form-group">
+                    {{ form.appointment_duration.errors }}
+                    <label for="{{ form.appointment_duration.id_for_label }}">Duration</label>
+                    {{ form.appointment_duration|add_class:"form-control"  }}
+                </div>
+                <div class="form-group">
+                    {{ form.appointment_reason.errors }}
+                    <label for="{{ form.subject.id_for_label }}">Reason</label>
+                    {{ form.appointment_reason|add_class:"form-control"  }}
+                </div>
+                <div class="form-group">
+                    {{ form.assigned_to.errors }}
+                    <label for="{{ form.assigned_to.id_for_label }}">Assigned Clinician</label>
+                    {{ form.assigned_to|add_class:"form-control"  }}
+                </div>
+                <div class="form-group">
+                    {{ form.appointment_status.errors }}
+                    <label for="{{ form.appointment_status.id_for_label }}">Appointment Status</label>
+                    {{ form.appointment_status|add_class:"form-control"  }}
+                </div>
+                <div class="form-check">
+                    {{ form.send_reschedule_email|add_class:"form-check-input" }}
+                    {{ form.send_reschedule_email.errors }}
+                    <label for="{{ form.send_reschedule_email.id_for_label }}">Send Reschedule confirmation email</label>
+                </div>
+
+                <input class="btn btn-secondary" type="submit" value="Save">
+                <a class="btn btn-secondary" href="{{ appointment.get_delete_url }}">Delete</a>
+            </form>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

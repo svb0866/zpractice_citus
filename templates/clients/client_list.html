@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extratail %}
+<script src='{% static 'js/clients.js' %}'></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    <div class="col my-4">
+    <form action="." method="GET" class="form-inline">
+        <input class="form-control mb-2 mr-sm-2" type="text" name="first_name" placeholder="First Name" {% if first_name %}value="{{ first_name }}" {% endif %}>
+        <input class="form-control mb-2 mr-sm-2" type="text" name="last_name" placeholder="Last Name" {% if last_name %}value="{{ last_name }}" {% endif %}>
+        <input class="form-control mb-2 mr-sm-2" type="text" name="email" placeholder="Email" {% if email %}value="{{ email }}" {% endif %}>
+        <input class="form-control mb-2 mr-sm-2" type="text" name="phone" placeholder="Phone" {% if phone %}value="{{ phone }}" {% endif %}>
+        <input class="btn btn-primary mb-2" type="submit" value="Search">
+        <a class="form-control mb-2 mr-sm-2 btn btn-info" href=".">Reset Search</a>
+    </form>
+    </div>
+    </div>
+
+    <div class="row">
+     <div class="col">
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email ID</th>
+      <th scope="col">Phone number</th>
+      <th scope="col"> </th>
+        <th scope="col"> </th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for client in clients %}
+    <tr>
+      <th scope="row"><a href="{{ client.get_absolute_url}}">
+          {{ client.first_name }} {{ client.middle_name }} {{ client.last_name }} {{ client.suffix }}
+      </a></th>
+      <td>
+          {% if client.primary_email %}
+             {{client.primary_email}}
+          {% endif %}
+         {% if client.secondary_email %}
+               <br>{{client.secondary_email}}
+          {% endif %}
+      </td>
+        <td>    {% if client.phone1 %}
+                   {{client.get_parsed_phone1}}
+                {% endif %}
+                 {% if client.phone2 %}
+                    <br>{{client.get_parsed_phone2}}
+                {% endif %}
+                {% if client.phone3 %}
+                    <br>{{client.get_parsed_phone3}}
+                {% endif %}
+          </td>
+        <td>
+            <a href="{{ client.get_appointment_list_url }}">Appointments</a>
+        </td>
+        <td>
+            <a href="{{client.get_set_appointment_url}}" class="btn btn-secondary">New Appointment</a>
+        </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+     </div>
+    </div>
+
+
+<!-- > pagation code below <!-->
+{% if is_paginated %}
+<nav aria-label="...">
+  <ul class="pagination">
+  {% if page_obj.has_previous %}
+      <li class="page-item"><span class="page-link"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span></li>
+  {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+  {% endif %}
+
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+          <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+       <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+  {% if page_obj.has_next %}
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}

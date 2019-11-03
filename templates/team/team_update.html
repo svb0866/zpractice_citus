@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extrahead %}
+{{ form.media.css }}
+{% endblock %}
+
+{% block extratail %}
+<script src='{% static 'js/team.js' %}'></script>
+{{ form.media.js }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <div class="row my-4">
+    <div class="col-6">
+     <form action="." method="POST">{% csrf_token %}{{ form.non_field_errors }}
+        <div class="form-group">
+            {{ form.first_name.errors }}
+            <label for="{{ form.first_name.id_for_label }}">First Name</label>
+            {{ form.first_name|add_class:"form-control" }}
+        </div>
+         <div class="form-group">
+            {{ form.last_name.errors }}
+            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+            {{ form.last_name|add_class:"form-control" }}
+        </div>
+         <div class="form-group">
+            {{ form.email.errors }}
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email|add_class:"form-control" }}
+        </div>
+         <div class="form-group">
+            {{ form.phone.errors }}
+            <label for="{{ form.phone.id_for_label }}">Phone</label>
+            {{ form.phone|add_class:"form-control" }}
+        </div>
+         <div class="form-check">
+            {{ form.is_clinician.errors }}
+            {{ form.is_clinician|add_class:"form-check-input" }}
+            <label for="{{ form.is_clinician.id_for_label }}">Clinician Role</label>
+        </div>
+         <div class="form-check">
+            {{ form.is_scheduler.errors }}
+            {{ form.is_scheduler|add_class:"form-check-input" }}
+            <label for="{{ form.is_scheduler.id_for_label }}">Scheduler Role</label>
+        </div>
+         <div class="form-check">
+            {{ form.is_biller.errors }}
+             {{ form.is_biller|add_class:"form-check-input" }}
+            <label for="{{ form.is_biller.id_for_label }}">Biller Role</label>
+        </div>
+        <input type="submit" value="Register" />
+    </form>
+    </div></div></div>
+{% endblock %}

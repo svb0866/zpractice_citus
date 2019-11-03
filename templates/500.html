@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://browser.sentry-cdn.com/5.7.1/bundle.min.js" integrity="sha384-KMv6bBTABABhv0NI+rVWly6PIRvdippFEgjpKyxUcpEmDWZTkDOiueL5xW+cztZZ" crossorigin="anonymous"></script>
+
+
+{% if sentry_event_id %}
+<script>
+  Sentry.init({ dsn: 'https://c0c2350272db4dd9bb2ee04904c14878@sentry.io/1793842' });
+  Sentry.showReportDialog({ eventId: '{{ sentry_event_id }}' })
+</script>
+
+{% endif %}
+</head>
+<body>
+<h1>ERROR 500</h1>
+</body>
+</html>

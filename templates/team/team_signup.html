@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block extrahead %}
+{{ form.media.css }}
+{% endblock %}
+
+{% block extratail %}
+<script src='{% static 'js/team.js' %}'></script>
+{{ form.media.js }}
+{% endblock %}
+
+{% block content %}
+    <div class="container pt-4">
+    <div class="row">
+    <div class="col-8">
+     <form action="." method="POST">
+     {{ form.non_field_errors }}
+        {% csrf_token %}
+         <div class="form-row">
+          <div class="form-group col-6">
+            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username|add_class:"form-control" }}
+         </div>
+          <div class="form-group col-6">
+            {{ form.email.errors }}
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email|add_class:"form-control" }}
+         </div>
+        </div>
+
+         <div class="form-row">
+         <div class="form-group col-6">
+            {{ form.first_name.errors }}
+            <label for="{{ form.first_name.id_for_label }}">First Name</label>
+            {{ form.first_name|add_class:"form-control" }}
+         </div>
+         <div class="form-group col-6">
+            {{ form.last_name.errors }}
+            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+            {{ form.last_name|add_class:"form-control" }}
+         </div>
+         </div>
+        <div class="form-row">
+         <div class="form-group col-6">
+             {{ form.phone.errors }}
+            <label for="{{ form.phone.id_for_label }}">Phone</label>
+            {{ form.phone|add_class:"form-control" }}
+         </div>
+        </div>
+         <div class="px-4 pt-3">
+         <div class="form-group border-bottom">
+             {{ form.is_clinician.errors }}
+            {{ form.is_clinician|add_class:"form-check-input" }}
+             <label for="{{ form.is_clinician.id_for_label }}">Clinician Role</label>
+             <small id="emailHelp" class="form-text text-muted">Can access all clinical notes of the patients</small>
+         </div>
+         <div class="form-group border-bottom">
+             {{ form.is_scheduler.errors }}
+            {{ form.is_scheduler|add_class:"form-check-input" }}
+             <label for="{{ form.is_scheduler.id_for_label }}">Scheduler Role</label>
+            <small id="emailHelp" class="form-text text-muted">Can schedule, modify appointments and send email/text reminders to clients</small>
+         </div>
+         <div class="form-group border-bottom">
+             {{ form.is_biller.errors }}
+            {{ form.is_biller|add_class:"form-check-input" }}
+             <label for="{{ form.is_biller.id_for_label }}">Biller Role</label>
+             <small id="emailHelp" class="form-text text-muted">an view the billing information</small>
+         </div>
+         </div>
+        <input class="btn btn-secondary" type="submit" value="Register" />
+    </form>
+    </div>
+    </div>
+    </div>
+{% endblock %}
